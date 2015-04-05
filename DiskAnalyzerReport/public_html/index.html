@@ -43,7 +43,10 @@
                             <div class="row col-md-12"><div class="circle grey-background">TOTAL_OTHER_FOUND</div></div>
                             <div class="row col-md-12 center grey-text">Other files found</div>
                         </div>
-                        <div class="col-sm-6"></div>                        
+                        <div class="col-sm-6">
+                            <div class="row col-md-12"><div class="circle-1 orange-background">TOTAL_DATA_ANALYZED</div></div>
+                            <div class="row col-md-12 center grey-text">Data analyzed</div>
+                        </div>                        
                     </div>
                     <br />
                 </div>
@@ -114,6 +117,21 @@
                 margin-bottom: 10px;
             }
             
+            .circle-1 {
+                position: relative;
+                width:100px;
+                height:100px;
+                border-radius: 50%;
+                color:#FFFFFF;
+                line-height: 20px;
+                text-align: center;
+                left:50%;
+                margin-left: -50px;
+                font-size:1.3em;
+                margin-bottom: 10px;
+                padding-top: 25px;
+            }
+            
             .red-background {
                 background-color: #FF5555;
                 border:1px solid #FF1111;
@@ -133,6 +151,10 @@
             
             .grey-background {
                 background-color: #ABABAB;
+            }
+            
+            .orange-background {
+                background-color: #ec971f;
             }
             
         </style>

@@ -12,15 +12,15 @@ public class DiskAnalyzer {
 		new Thread(new AnalyzerRunnable(path, onComplete)).start();
 	}
 	
-	public static long bytesToKilobytes(long bytes){
+	public static double bytesToKilobytes(long bytes){
 		return bytes/STORAGE_UNIT;
 	}
 	
-	public static long bytesToMegabytes(long bytes){
+	public static double bytesToMegabytes(long bytes){
 		return bytesToKilobytes(bytes)/STORAGE_UNIT;
 	}
 	
-	public static long bytesToGigabytes(long bytes){
+	public static double bytesToGigabytes(long bytes){
 		return bytesToMegabytes(bytes)/STORAGE_UNIT;
 	}
 	

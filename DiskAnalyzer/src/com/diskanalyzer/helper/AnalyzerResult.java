@@ -215,14 +215,15 @@ public class AnalyzerResult {
 		t = t.replaceFirst("TOTAL_VIDEO_FOUND", String.valueOf(this.getVideoFilesCount()));
 		t = t.replaceFirst("TOTAL_DOCUMENT_FOUND", String.valueOf(this.getDocumentFilesCount()));
 		t = t.replaceFirst("TOTAL_OTHER_FOUND", String.valueOf(this.getOtherFilesCount()));
+		t = t.replaceFirst("TOTAL_DATA_ANALYZED", String.format("%.2f", DiskAnalyzer.bytesToGigabytes(this.getTotalSizeAnalyzed()))  + "<br />Gigabytes" );
 		
 		
 		builder = new StringBuilder();
 		builder.append("<table class=\"top-entries-table table table-bordered\">");
 		builder.append("<thead><tr><td  colspan=\"2\" class=\"center\">");
-		builder.append("<strong>Analysis of ");
+		builder.append("<strong>Analysis of <code>");
 		builder.append(StringEscapeUtils.escapeJava(Main.INPUT_PATH));
-		builder.append("</strong><br />Top 10 space occupying files</td></tr><tr><td>Filename</td><td>Size in MB</td></tr></thead>");
+		builder.append("</code></strong><br />Top 10 space occupying files</td></tr><tr><td>Filename</td><td>Size in MB</td></tr></thead>");
 		
 		List<IndexEntry> sortedEntries = new ArrayList<IndexEntry>();
 		PriorityQueue<IndexEntry> tempQueue = new PriorityQueue<IndexEntry>();
@@ -240,7 +241,9 @@ public class AnalyzerResult {
 				fileName = fileName + "...";
 			}
 			builder.append("<tr>");
-			builder.append("<td><code>");
+			builder.append("<td><code title=\"");
+			builder.append(StringEscapeUtils.escapeJava(entry.getFullFilePath()));
+			builder.append("\">");
 			builder.append(fileName);
 			builder.append("</code></td>");
 			builder.append("<td>");

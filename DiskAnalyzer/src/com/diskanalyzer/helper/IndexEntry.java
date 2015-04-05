@@ -4,6 +4,17 @@ package com.diskanalyzer.helper;
 public class IndexEntry implements Comparable<IndexEntry> {
 	
 	private String filePath;
+	
+	private String fullFilePath;
+	
+	public String getFullFilePath() {
+		return fullFilePath;
+	}
+
+	public void setFullFilePath(String fullFilePath) {
+		this.fullFilePath = fullFilePath;
+	}
+
 	public String getFilePath() {
 		return filePath;
 	}
@@ -22,9 +33,10 @@ public class IndexEntry implements Comparable<IndexEntry> {
 
 	private long fileSize;
 	
-	public IndexEntry(String filePath,long fileSize){
+	public IndexEntry(String filePath,long fileSize,String fullFilePath){
 		this.filePath = filePath;
 		this.fileSize  = fileSize;
+		this.fullFilePath = fullFilePath;
 	}
 
 	@Override

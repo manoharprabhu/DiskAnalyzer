@@ -39,6 +39,11 @@ public class AnalyzerRunnable implements Runnable{
 		
 		Path dir = FileSystems.getDefault().getPath(path, "");
 		
+		if(dir.toFile().isFile()){
+			System.out.println("Please supply a path  to folder.");
+			return;
+		}
+		
 		bfsQueue.add(dir);
 		while(!bfsQueue.isEmpty()){
 			try {
@@ -54,12 +59,14 @@ public class AnalyzerRunnable implements Runnable{
 						onComplete.updateIndexProgress(count);
 					}
 					
-					analyzerResult.addEntry(new IndexEntry(p.toFile().getName(),p.toFile().length()));
+					analyzerResult.addEntry(new IndexEntry(p.toFile().getName(),p.toFile().length(),p.toFile().getAbsolutePath()));
 				}
 			}
 			} catch (AccessDeniedException e){
+				e.printStackTrace();
 				analyzerResult.incrementInaccessibleFiles();
 			} catch (IOException e) {
+				e.printStackTrace();
 				analyzerResult.incrementInaccessibleFiles();
 			}
 		}
