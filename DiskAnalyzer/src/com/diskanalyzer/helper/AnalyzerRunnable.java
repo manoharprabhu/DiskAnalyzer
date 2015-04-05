@@ -26,7 +26,7 @@ public class AnalyzerRunnable implements Runnable{
 		this.path = path;
 		this.onComplete = onComplete;
 		analyzerResult = AnalyzerResult.getInstance();
-		progressUpdateInterval = 10;
+		progressUpdateInterval = 1000;
 	}
 
 	

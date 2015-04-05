@@ -1,6 +1,5 @@
 package com.diskanalyzer;
 
-import com.diskanalyzer.helper.AnalyzerResult;
 import com.diskanalyzer.helper.AnalyzerRunnable;
 import com.diskanalyzer.helper.IndexerCallback;
 
