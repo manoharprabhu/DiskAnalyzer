@@ -4,18 +4,15 @@ import java.awt.Desktop;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.PriorityQueue;
 import java.util.Set;
 
 import org.apache.commons.lang3.StringEscapeUtils;
-import org.apache.commons.lang3.StringUtils;
 
 import com.diskanalyzer.DiskAnalyzer;
 import com.diskanalyzer.Main;
@@ -215,11 +212,29 @@ public class AnalyzerResult {
 		t = t.replaceFirst("TOTAL_VIDEO_FOUND", String.valueOf(this.getVideoFilesCount()));
 		t = t.replaceFirst("TOTAL_DOCUMENT_FOUND", String.valueOf(this.getDocumentFilesCount()));
 		t = t.replaceFirst("TOTAL_OTHER_FOUND", String.valueOf(this.getOtherFilesCount()));
-		t = t.replaceFirst("TOTAL_DATA_ANALYZED", String.format("%.2f", DiskAnalyzer.bytesToGigabytes(this.getTotalSizeAnalyzed()))  + "<br />Gigabytes" );
+		
+		double dataAnalyzed = 0;
+		String unit = "";
+		if(this.getTotalSizeAnalyzed() >= 1000*1000*1000){
+			dataAnalyzed = DiskAnalyzer.bytesToGigabytes(this.getTotalSizeAnalyzed());
+			unit = "Gigabytes";
+		} else if(this.getTotalSizeAnalyzed() >= 1000*1000){
+			dataAnalyzed = DiskAnalyzer.bytesToMegabytes(this.getTotalSizeAnalyzed());
+			unit = "Megabytes";
+		} else if(this.getTotalSizeAnalyzed() >= 1000){
+			dataAnalyzed = DiskAnalyzer.bytesToKilobytes(this.getTotalSizeAnalyzed());
+			unit = "Kilobytes";
+		} else {
+			dataAnalyzed = this.getTotalSizeAnalyzed();
+			unit = "Bytes";
+		}
+			
+			
+		t = t.replaceFirst("TOTAL_DATA_ANALYZED", String.format("%.2f", dataAnalyzed)  + "<br />"+unit );
 		
 		
 		builder = new StringBuilder();
-		builder.append("<table class=\"top-entries-table table table-bordered\">");
+		builder.append("<table class=\"table table-responsive table-condensed\">");
 		builder.append("<thead><tr><td  colspan=\"2\" class=\"center\">");
 		builder.append("<strong>Analysis of <code>");
 		builder.append(StringEscapeUtils.escapeJava(Main.INPUT_PATH));
