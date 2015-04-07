@@ -11,21 +11,24 @@ Usage
 
 The DiskAnalyzer API is also available in  *com.diskanalyzer.DiskAnalyzer*
 #####Example
-    DiskAnalyzer analyzer = new DiskAnalyzer();
-    analyzer.analyzePath("E:\\",new IndexerCallback(){
-    /*This method will be called upon completion of analysys.
-    *The AnalyzerResult object will contain details about the stats found during anaysis
-    */
-    @Override
-	public void onIndexComplete(AnalyzerResult analyzerResult) {
-			
-	}
 
-    /* This method will be called on analysis of every 1000th files.
-    * You can perform the progress update here.
-    */
-	@Override
-	public void updateIndexProgress(long progress) {
+```java
+DiskAnalyzer analyzer = new DiskAnalyzer();
+analyzer.analyzePath("E:\\",new IndexerCallback(){
+/*This method will be called upon completion of analysys.
+*The AnalyzerResult object will contain details about the stats found during anaysis
+*/
+@Override
+public void onIndexComplete(AnalyzerResult analyzerResult) {
+		
+}
+
+/* This method will be called on analysis of every 1000th files.
+* You can perform the progress update here.
+*/
+@Override
+public void updateIndexProgress(long progress) {
 			
-	}
-    });
+}
+});
+```
