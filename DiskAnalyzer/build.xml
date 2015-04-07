@@ -1,0 +1,51 @@
+<project name="DiskAnalyzer" default="dist" basedir=".">
+	<description>
+        Build the code into a executable jar
+    </description>
+	<!-- set global properties for this build -->
+	<property name="src" location="src" />
+	<property name="build" location="build" />
+	<property name="dist" location="dist" />
+	<property name="version" value="1_0" />
+	<property name="libs" location="libs/" />
+		
+
+
+	<path id="cps">
+		<fileset dir="${libs}">
+			<include name="*.jar" />
+		</fileset>
+		<pathelement path="${build.dir}" />
+	</path>
+
+	<target name="init">
+		<tstamp />
+		<mkdir dir="${build}" />
+	</target>
+
+	<target name="compile" depends="init" description="compile the source ">
+		<!-- Compile the java code from ${src} into ${build} -->
+		<javac srcdir="${src}" destdir="${build}">
+			<classpath refid="cps">
+			</classpath>
+		</javac>
+	</target>
+
+	<target name="dist" depends="compile" description="generate the distribution">
+		<mkdir dir="${dist}/${version}" />
+		<manifest file="build/MANIFEST.MF">
+			<attribute name="Main-Class" value="com.diskanalyzer.Main" />
+		</manifest>
+		<jar jarfile="${dist}/${version}/DiskAnalyzer.jar" basedir="${build}" manifest="build/MANIFEST.MF">
+			<zipfileset dir="src" includes="result_template.html">
+			</zipfileset>
+			<zipgroupfileset dir="${libs}" includes="**/*.jar" />
+		</jar>
+	</target>
+
+	<target name="clean" description="clean up">
+		<!-- Delete the ${build} and ${dist} directory trees -->
+		<delete dir="${build}" />
+		<delete dir="${dist}" />
+	</target>
+</project>

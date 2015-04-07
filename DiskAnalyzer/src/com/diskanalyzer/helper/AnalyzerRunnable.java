@@ -63,10 +63,10 @@ public class AnalyzerRunnable implements Runnable{
 				}
 			}
 			} catch (AccessDeniedException e){
-				e.printStackTrace();
+				//e.printStackTrace();
 				analyzerResult.incrementInaccessibleFiles();
 			} catch (IOException e) {
-				e.printStackTrace();
+				//e.printStackTrace();
 				analyzerResult.incrementInaccessibleFiles();
 			}
 		}

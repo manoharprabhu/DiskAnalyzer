@@ -276,7 +276,7 @@ public class AnalyzerResult {
 		Desktop.getDesktop().open(temp);;
 		
 		} catch(Exception e){
-			e.printStackTrace();
+			//e.printStackTrace();
 		}
 	}
 
