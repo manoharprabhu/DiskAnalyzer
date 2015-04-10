@@ -1,0 +1,28 @@
+<Files>
+<file type="audio" value="mp3" />
+<file type="audio" value="ogg" />
+<file type="audio" value="raw" />
+<file type="audio" value="midi" />
+
+<file type="video" value="avi" />
+<file type="video" value="mkv" />
+<file type="video" value="flv" />
+<file type="video" value="mp4" />
+<file type="video" value="mov" />
+<file type="video" value="3gp" />
+
+<file type="picture" value="jpeg" />
+<file type="picture" value="jpg" />
+<file type="picture" value="png" />
+<file type="picture" value="tiff" />
+<file type="picture" value="gif" />
+
+<file type="document" value="doc" />
+<file type="document" value="xls" />
+<file type="document" value="xlsx" />
+<file type="document" value="ppt" />
+<file type="document" value="pptx" />
+<file type="document" value="txt" />
+<file type="document" value="rtf" />
+<file type="document" value="pdf" />
+</Files>

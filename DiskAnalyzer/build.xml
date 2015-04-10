@@ -8,7 +8,7 @@
 	<property name="dist" location="dist" />
 	<property name="version" value="1_0" />
 	<property name="libs" location="libs/" />
-		
+
 
 
 	<path id="cps">
@@ -38,6 +38,8 @@
 		</manifest>
 		<jar jarfile="${dist}/${version}/DiskAnalyzer.jar" basedir="${build}" manifest="build/MANIFEST.MF">
 			<zipfileset dir="src" includes="result_template.html">
+			</zipfileset>
+			<zipfileset dir="src" includes="FileTypes.xml">
 			</zipfileset>
 			<zipgroupfileset dir="${libs}" includes="**/*.jar" />
 		</jar>
