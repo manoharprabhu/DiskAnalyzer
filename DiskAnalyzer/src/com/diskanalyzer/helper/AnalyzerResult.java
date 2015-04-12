@@ -185,34 +185,18 @@ public class AnalyzerResult {
 			t = t.replaceFirst("TOTAL_OTHER_FOUND",
 					String.valueOf(this.getOtherFilesCount()));
 
-			double dataAnalyzed = 0;
-			String unit = "";
-			if (this.getTotalSizeAnalyzed() >= 1000 * 1000 * 1000) {
-				dataAnalyzed = DiskAnalyzer.bytesToGigabytes(this
-						.getTotalSizeAnalyzed());
-				unit = "Gigabytes";
-			} else if (this.getTotalSizeAnalyzed() >= 1000 * 1000) {
-				dataAnalyzed = DiskAnalyzer.bytesToMegabytes(this
-						.getTotalSizeAnalyzed());
-				unit = "Megabytes";
-			} else if (this.getTotalSizeAnalyzed() >= 1000) {
-				dataAnalyzed = DiskAnalyzer.bytesToKilobytes(this
-						.getTotalSizeAnalyzed());
-				unit = "Kilobytes";
-			} else {
-				dataAnalyzed = this.getTotalSizeAnalyzed();
-				unit = "Bytes";
-			}
+			
+			String[] result = this.getAppropriateSizeWithUnit(this.getTotalSizeAnalyzed(),false).split(" ");
 
 			t = t.replaceFirst("TOTAL_DATA_ANALYZED",
-					String.format("%.2f", dataAnalyzed) + "<br />" + unit);
+					result[0] + "<br />" + result[1]);
 
 			builder = new StringBuilder();
 			builder.append("<table class=\"table table-responsive table-condensed\">");
 			builder.append("<thead><tr><td  colspan=\"2\" class=\"center\">");
 			builder.append("<strong>Analysis of <code>");
 			builder.append(StringEscapeUtils.escapeJava(Main.INPUT_PATH));
-			builder.append("</code></strong><br />Top 10 space occupying files</td></tr><tr><td>Filename</td><td>Size in MB</td></tr></thead>");
+			builder.append("</code></strong><br />Top 10 space occupying files</td></tr><tr><td>Filename</td><td>Size on disk</td></tr></thead>");
 
 			List<IndexEntry> sortedEntries = new ArrayList<IndexEntry>();
 			PriorityQueue<IndexEntry> tempQueue = new PriorityQueue<IndexEntry>();
@@ -238,8 +222,7 @@ public class AnalyzerResult {
 				builder.append(fileName);
 				builder.append("</code></td>");
 				builder.append("<td>");
-				builder.append(DiskAnalyzer.bytesToMegabytes(entry
-						.getFileSize()));
+				builder.append(this.getAppropriateSizeWithUnit(entry.getFileSize(),true));
 				builder.append("</td>");
 				builder.append("</tr>");
 			}
@@ -254,8 +237,28 @@ public class AnalyzerResult {
 			;
 
 		} catch (Exception e) {
-			// e.printStackTrace();
+			 e.printStackTrace();
 		}
 	}
+	
+	public String getAppropriateSizeWithUnit(long size,boolean isShortUnit){
+		String unit = "";
+		double result = 0;
+		if (size >= 1000 * 1000 * 1000) {
+			result = DiskAnalyzer.bytesToGigabytes(size);
+			unit = isShortUnit?"GB":"Gigabytes";
+		} else if (size >= 1000 * 1000) {
+			result = DiskAnalyzer.bytesToMegabytes(size);
+			unit = isShortUnit?"MB":"Megabytes";
+		} else if (size >= 1000) {
+			result = DiskAnalyzer.bytesToKilobytes(size);
+			unit = isShortUnit?"KB":"Kilobytes";
+		} else {
+			result = size;
+			unit = isShortUnit?"B":"Bytes";
+		}
+		return String.format("%.2f", result) +" " + unit;
+	}
+	
 
 }
