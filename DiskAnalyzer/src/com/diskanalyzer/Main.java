@@ -31,8 +31,6 @@ public class Main {
 
 			@Override
 			public void onIndexComplete(AnalyzerResult analyzerResult) {
-				System.out.println();
-				System.out.println("Finshed indexing " + DiskAnalyzer.bytesToGigabytes(analyzerResult.getTotalSizeAnalyzed()) + " gigabytes of data. Generating report in your  browser.");
 				analyzerResult.generateHTMLReport();
 			}
 

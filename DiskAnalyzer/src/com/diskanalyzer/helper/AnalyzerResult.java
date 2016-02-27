@@ -14,126 +14,79 @@ import java.util.Set;
 
 import org.apache.commons.lang3.StringEscapeUtils;
 
-import com.diskanalyzer.DiskAnalyzer;
 import com.diskanalyzer.Main;
 
 public class AnalyzerResult {
 
-	private static AnalyzerResult instance = new AnalyzerResult();
 	private PriorityQueue<IndexEntry> topEntries;
-
-	private long numberOfEntries;
+	private long topEntriesCountToList;
 	private long totalSizeAnalyzed;
 	private long videoFilesCount;
 	private long audioFilesCount;
 	private long documentFilesCount;
 	private long pictureFilesCount;
 	private long otherFilesCount;
-
+	private long totalNumberOfFiles;
+	private long inaccessibleFiles;
+	private final long STORAGE_UNIT = 1000;
+	private HashMap<String, Set<String>> superSet;
+	
 	public long getOtherFilesCount() {
 		return otherFilesCount;
 	}
 
-	public void setOtherFilesCount(long otherFilesCount) {
-		this.otherFilesCount = otherFilesCount;
-	}
-
-	private static HashMap<String, Set<String>> superSet;
-
 	public long getNumberOfEntries() {
-		return numberOfEntries;
-	}
-
-	public void setNumberOfEntries(long numberOfEntries) {
-		this.numberOfEntries = numberOfEntries;
+		return topEntriesCountToList;
 	}
 
 	public long getVideoFilesCount() {
 		return videoFilesCount;
 	}
 
-	public void setVideoFilesCount(long videoFilesCount) {
-		this.videoFilesCount = videoFilesCount;
-	}
-
 	public long getAudioFilesCount() {
 		return audioFilesCount;
-	}
-
-	public void setAudioFilesCount(long audioFilesCount) {
-		this.audioFilesCount = audioFilesCount;
 	}
 
 	public long getDocumentFilesCount() {
 		return documentFilesCount;
 	}
 
-	public void setDocumentFilesCount(long documentFilesCount) {
-		this.documentFilesCount = documentFilesCount;
-	}
-
 	public long getPictureFilesCount() {
 		return pictureFilesCount;
-	}
-
-	public void setPictureFilesCount(long pictureFilesCount) {
-		this.pictureFilesCount = pictureFilesCount;
 	}
 
 	public long getInaccessibleFiles() {
 		return inaccessibleFiles;
 	}
 
-	public void setInaccessibleFiles(long inaccessibleFiles) {
-		this.inaccessibleFiles = inaccessibleFiles;
-	}
-
-	public void incrementInaccessibleFiles() {
-		inaccessibleFiles++;
-	}
-
-	private long inaccessibleFiles;
-
 	public long getTotalSizeAnalyzed() {
 		return totalSizeAnalyzed;
-	}
-
-	public void setTotalSizeAnalyzed(long totalSizeAnalyzed) {
-		this.totalSizeAnalyzed = totalSizeAnalyzed;
 	}
 
 	public PriorityQueue<IndexEntry> getTopEntries() {
 		return topEntries;
 	}
 
-	public void setTopEntries(PriorityQueue<IndexEntry> topEntries) {
-		this.topEntries = topEntries;
-	}
-
-	private AnalyzerResult() {
+	public AnalyzerResult() {
 		topEntries = new PriorityQueue<IndexEntry>();
-		numberOfEntries = 10;
+		topEntriesCountToList = 10;
 		totalSizeAnalyzed = 0;
 		inaccessibleFiles = 0;
+		totalNumberOfFiles = 0;
 		populateMediaList();
-
 	}
 
 	private void populateMediaList() {
 		superSet = new HashMap<String, Set<String>>();
 		FileTypeHelper helper = new FileTypeHelper();
 		superSet = helper.getFileTypeSets();
-
 	}
-
-	public static AnalyzerResult getInstance() {
-		return instance;
-	}
-
+	
 	public void addEntry(IndexEntry entry) {
+		totalNumberOfFiles = totalNumberOfFiles + 1;
 		topEntries.add(entry);
 		totalSizeAnalyzed += entry.getFileSize();
-		if (topEntries.size() > numberOfEntries) {
+		if (topEntries.size() > topEntriesCountToList) {
 			topEntries.poll();
 		}
 		// System.out.println(entry.getFilePath());
@@ -185,11 +138,11 @@ public class AnalyzerResult {
 			t = t.replaceFirst("TOTAL_OTHER_FOUND",
 					String.valueOf(this.getOtherFilesCount()));
 
-			
-			String[] result = this.getAppropriateSizeWithUnit(this.getTotalSizeAnalyzed(),false).split(" ");
+			String[] result = this.getAppropriateSizeWithUnit(
+					this.getTotalSizeAnalyzed(), false).split(" ");
 
-			t = t.replaceFirst("TOTAL_DATA_ANALYZED",
-					result[0] + "<br />" + result[1]);
+			t = t.replaceFirst("TOTAL_DATA_ANALYZED", result[0] + "<br />"
+					+ result[1]);
 
 			builder = new StringBuilder();
 			builder.append("<table class=\"table table-responsive table-condensed\">");
@@ -222,7 +175,8 @@ public class AnalyzerResult {
 				builder.append(fileName);
 				builder.append("</code></td>");
 				builder.append("<td>");
-				builder.append(this.getAppropriateSizeWithUnit(entry.getFileSize(),true));
+				builder.append(this.getAppropriateSizeWithUnit(
+						entry.getFileSize(), true));
 				builder.append("</td>");
 				builder.append("</tr>");
 			}
@@ -237,28 +191,46 @@ public class AnalyzerResult {
 			;
 
 		} catch (Exception e) {
-			 e.printStackTrace();
+			e.printStackTrace();
 		}
 	}
-	
-	public String getAppropriateSizeWithUnit(long size,boolean isShortUnit){
+
+	public String getAppropriateSizeWithUnit(long size, boolean isShortUnit) {
 		String unit = "";
 		double result = 0;
 		if (size >= 1000 * 1000 * 1000) {
-			result = DiskAnalyzer.bytesToGigabytes(size);
-			unit = isShortUnit?"GB":"Gigabytes";
+			result = bytesToGigabytes(size);
+			unit = isShortUnit ? "GB" : "Gigabytes";
 		} else if (size >= 1000 * 1000) {
-			result = DiskAnalyzer.bytesToMegabytes(size);
-			unit = isShortUnit?"MB":"Megabytes";
+			result = bytesToMegabytes(size);
+			unit = isShortUnit ? "MB" : "Megabytes";
 		} else if (size >= 1000) {
-			result = DiskAnalyzer.bytesToKilobytes(size);
-			unit = isShortUnit?"KB":"Kilobytes";
+			result = bytesToKilobytes(size);
+			unit = isShortUnit ? "KB" : "Kilobytes";
 		} else {
 			result = size;
-			unit = isShortUnit?"B":"Bytes";
+			unit = isShortUnit ? "B" : "Bytes";
 		}
-		return String.format("%.2f", result) +" " + unit;
+		return String.format("%.2f", result) + " " + unit;
 	}
-	
 
+	private double bytesToMegabytes(final long bytes) {
+		return bytesToKilobytes(bytes) / STORAGE_UNIT;
+	}
+
+	private double bytesToGigabytes(final long bytes) {
+		return bytesToMegabytes(bytes) / STORAGE_UNIT;
+	}
+
+	private double bytesToKilobytes(final long bytes) {
+		return bytes / STORAGE_UNIT;
+	}
+
+	public long getTotalNumberOfFiles() {
+		return totalNumberOfFiles;
+	}
+
+	public void incrementInaccessibleFiles() {
+		inaccessibleFiles++;
+	}
 }

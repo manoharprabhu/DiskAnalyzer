@@ -41,13 +41,18 @@ public class IndexEntry implements Comparable<IndexEntry> {
 
 	@Override
 	public int compareTo(IndexEntry arg0) {
-		if(this.getFileSize() > arg0.getFileSize()){
+		if(this.getFileSize() < arg0.getFileSize()){
 			return 1;
-		} else if(this.getFileSize() < arg0.getFileSize()){
+		} else if(this.getFileSize() > arg0.getFileSize()){
 			return -1;
 		}  else {
 			return 0;
 		}
+	}
+	
+	@Override
+	public String toString() {
+		return this.filePath + " | " + this.fileSize;
 	}
 
 }

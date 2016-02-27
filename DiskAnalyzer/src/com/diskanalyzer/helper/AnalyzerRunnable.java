@@ -25,7 +25,7 @@ public class AnalyzerRunnable implements Runnable{
 		bfsQueue = new LinkedList<Path>();
 		this.path = path;
 		this.onComplete = onComplete;
-		analyzerResult = AnalyzerResult.getInstance();
+		analyzerResult = new AnalyzerResult();
 		progressUpdateInterval = 1000;
 	}
 
