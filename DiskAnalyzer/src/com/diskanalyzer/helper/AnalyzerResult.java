@@ -223,4 +223,8 @@ public class AnalyzerResult {
 	public long getTotalNumberOfFiles() {
 		return totalNumberOfFiles;
 	}
+	
+	public String getTopEntryFileName(){
+	    return this.topEntries.peek().getFilePath();
+	}
 }
