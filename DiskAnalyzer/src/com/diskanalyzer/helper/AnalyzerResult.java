@@ -27,10 +27,9 @@ public class AnalyzerResult {
 	private long pictureFilesCount;
 	private long otherFilesCount;
 	private long totalNumberOfFiles;
-	private long inaccessibleFiles;
 	private final long STORAGE_UNIT = 1000;
 	private HashMap<String, Set<String>> superSet;
-	
+
 	public long getOtherFilesCount() {
 		return otherFilesCount;
 	}
@@ -55,23 +54,18 @@ public class AnalyzerResult {
 		return pictureFilesCount;
 	}
 
-	public long getInaccessibleFiles() {
-		return inaccessibleFiles;
-	}
-
 	public long getTotalSizeAnalyzed() {
 		return totalSizeAnalyzed;
 	}
 
 	public PriorityQueue<IndexEntry> getTopEntries() {
-		return topEntries;
+		return new PriorityQueue<IndexEntry>(topEntries);
 	}
 
 	public AnalyzerResult() {
 		topEntries = new PriorityQueue<IndexEntry>();
 		topEntriesCountToList = 10;
 		totalSizeAnalyzed = 0;
-		inaccessibleFiles = 0;
 		totalNumberOfFiles = 0;
 		populateMediaList();
 	}
@@ -81,7 +75,7 @@ public class AnalyzerResult {
 		FileTypeHelper helper = new FileTypeHelper();
 		superSet = helper.getFileTypeSets();
 	}
-	
+
 	public void addEntry(IndexEntry entry) {
 		totalNumberOfFiles = totalNumberOfFiles + 1;
 		topEntries.add(entry);
@@ -228,9 +222,5 @@ public class AnalyzerResult {
 
 	public long getTotalNumberOfFiles() {
 		return totalNumberOfFiles;
-	}
-
-	public void incrementInaccessibleFiles() {
-		inaccessibleFiles++;
 	}
 }

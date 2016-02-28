@@ -10,9 +10,9 @@ import com.diskanalyzer.helper.IndexerCallback;
 public class DiskAnalyzerTest {
 
 	@Test
-	public void testAnalyzePath() throws InterruptedException {
-		Thread t = new Thread(new AnalyzerRunnable("test_resources",
-				new IndexerCallback() {
+	public void testBasicTest() throws InterruptedException {
+		Thread t = new Thread(new AnalyzerRunnable(
+				"test_resources\\basic_test", new IndexerCallback() {
 
 					@Override
 					public void updateIndexProgress(long progress) {
@@ -26,7 +26,27 @@ public class DiskAnalyzerTest {
 						Assert.assertEquals(2L, result.getAudioFilesCount());
 						Assert.assertEquals(1L, result.getPictureFilesCount());
 						Assert.assertEquals(1L, result.getVideoFilesCount());
-						Assert.assertEquals("document2.txt", result.getTopEntries().peek().getFilePath());
+						Assert.assertEquals("document2.txt", result
+								.getTopEntries().peek().getFilePath());
+					}
+				}));
+
+		t.run();
+	}
+
+	@Test
+	public void testSizeTest() throws InterruptedException {
+		Thread t = new Thread(new AnalyzerRunnable(
+				"test_resources\\size_test", new IndexerCallback() {
+
+					@Override
+					public void updateIndexProgress(long progress) {
+						System.out.println(progress);
+					}
+
+					@Override
+					public void onIndexComplete(AnalyzerResult result) {
+						Assert.assertEquals(36, result.getTotalSizeAnalyzed());
 					}
 				}));
 

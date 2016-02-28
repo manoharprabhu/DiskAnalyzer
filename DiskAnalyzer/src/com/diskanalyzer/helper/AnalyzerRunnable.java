@@ -1,7 +1,6 @@
 package com.diskanalyzer.helper;
 
 import java.io.IOException;
-import java.nio.file.AccessDeniedException;
 import java.nio.file.DirectoryStream;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
@@ -62,12 +61,8 @@ public class AnalyzerRunnable implements Runnable{
 					analyzerResult.addEntry(new IndexEntry(p.toFile().getName(),p.toFile().length(),p.toFile().getAbsolutePath()));
 				}
 			}
-			} catch (AccessDeniedException e){
-				//e.printStackTrace();
-				analyzerResult.incrementInaccessibleFiles();
-			} catch (IOException e) {
-				//e.printStackTrace();
-				analyzerResult.incrementInaccessibleFiles();
+			} catch (IOException e){
+				
 			}
 		}
 		
